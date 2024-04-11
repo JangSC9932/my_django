@@ -1,0 +1,13 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+    <h1>Hello, {{ name }}!</h1>
+    <p> 태그 전체 목록 {{  tags }}</p>
+    <p> 첫번째 태그 {{ tags.0|upper }}</p>
+    <p> 모든 책 목록 </p>
+    <ul>
+        {% for book in books %}
+            <li>{{ book }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
