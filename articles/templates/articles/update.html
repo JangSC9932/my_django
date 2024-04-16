@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1> Article Update </h1>
-    <form action="{% url 'update_article' article.id %}" method="POST">
+    <form action="{% url 'articles:update_article' article.id %}" method="POST">
         {% csrf_token %}
         <label for="title">글 제목</label>
         <input type="text" id="title" name="title" value="{{ article.title }}">
@@ -12,5 +12,5 @@
         <br>
         <button type="submit">글 수정</button>
     </form>
-    <a href="{% url 'articles' %}">취소</a>
+    <a href="{% url 'articles:articles' %}">취소</a>
 {% endblock %}

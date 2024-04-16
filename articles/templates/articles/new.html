@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+	<h1>New Article</h1>
+    <form action="{% url 'articles:create_article' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">글 등록</button>
+    </form>
+    <a href="{% url 'articles:articles' %}">취소</a>
+    
+{% endblock content %}
