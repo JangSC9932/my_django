@@ -78,46 +78,60 @@ def create_article(request):
     else:
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            article = form.save()
+            article = form.save(commit=False)
+            article.author = request.user
+            article.save()
             return redirect("articles:detail_article", article.id)
 
 
 # 글 수정
+@login_required
 def update_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     # 수정 페이지
     if request.method == "GET":
-        context = {
-            "article": article,
-            "form": ArticleForm()
-        }
-        return render(request, "articles/update.html", context)
+        if article.author == request.user:
+            context = {
+                "article": article,
+                "form": ArticleForm()
+            }
+            return render(request, "articles/update.html", context)
+        else:
+            return redirect("articles:detail_article", article_id)
     # 수정 요청
     else:
-        ArticleForm(request.POST, instance=article).save()
+        if article.author == request.user:
+            ArticleForm(request.POST, instance=article).save()
         return redirect("articles:detail_article", article_id)
 
 
 # 글 삭제
+@login_required
 def delete_article(request, article_id):
-    get_object_or_404(Article, id=article_id).delete()
+    article = get_object_or_404(Article, id=article_id)
+    if article.author == request.user:
+        article.delete()
     return redirect("articles:articles")
 
 
 # 댓글
 @require_POST
+@login_required
 def comment_create(request, article_id):
     form = CommentForm(request.POST)
     if form.is_valid():
         comment = form.save(commit=False)
         comment.article_id = article_id
         comment.save()
-        return redirect("articles:detail_article", article_id)
+    return redirect("articles:detail_article", article_id)
 
 
 # 댓글 삭제
+@login_required
 def comment_delete(request, article_id, comment_id):
-    get_object_or_404(Comment, id=comment_id).delete()
+    comment = get_object_or_404(Comment, id=comment_id)
+    if comment.author == request.user:
+        comment.delete()
     return redirect("articles:detail_article", article_id)
 
 
