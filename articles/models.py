@@ -11,3 +11,13 @@ class Article(models.Model):
     def __str__(self):
         return (f'id : {self.id} | title : {self.title} | content : {self.content} | created_at: {self.created_at} '
                 f'| updated_at: {self.updated_at}')
+
+
+class Comment(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
+    content = models.CharField(max_length=120)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.content
