@@ -69,7 +69,7 @@ def create_article(request):
         }
         return render(request, "articles/new.html", context)
     else:
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             article = form.save()
             return redirect("articles:detail_article", article.id)

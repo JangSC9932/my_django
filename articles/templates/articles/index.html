@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+    <img src="{% static "articles/healthy-7213383.jpg" %}" alt="파일"/>
 	<h1>Hello, {{ request.user }}!</h1>
 {% endblock content %}
