@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
 
+# namespace
 app_name = 'articles'
+
 urlpatterns = [
     path('hello/', views.hello, name='hello'),
     path('data_throw/', views.data_throw, name='data_throw'),

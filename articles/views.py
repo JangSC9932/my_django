@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ArticleForm
 from .models import Article
 
@@ -56,11 +56,11 @@ def articles(request):
 # 글 상세 페이지
 def detail_article(request, article_id):
     context = {
-        "article": Article.objects.get(id=article_id)
+        "article": get_object_or_404(Article, id=article_id)
     }
     return render(request, "articles/detail.html", context)
 
-
+@login_required
 # 글 작성
 def create_article(request):
     if request.method == "GET":
@@ -77,7 +77,7 @@ def create_article(request):
 
 # 글 수정
 def update_article(request, article_id):
-    article = Article.objects.get(id=article_id)
+    article = get_object_or_404(Article, id=article_id)
     # 수정 페이지
     if request.method == "GET":
         context = {
@@ -93,5 +93,5 @@ def update_article(request, article_id):
 
 # 글 삭제
 def delete_article(request, article_id):
-    Article.objects.get(id=article_id).delete()
+    get_object_or_404(Article, id=article_id).delete()
     return redirect("articles:articles")
